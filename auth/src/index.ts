@@ -1,4 +1,5 @@
 import express from 'express'
+import 'express-async-errors'
 import { json } from 'body-parser'
 import {
   currentUserRouter,
@@ -7,9 +8,8 @@ import {
   signupRouter,
 } from './routes'
 import { errorHandler } from './middlewares'
-import { NotFoundError, AuthError } from './errors'
+import { NotFoundError } from './errors'
 import mongoose from 'mongoose'
-import 'express-async-errors'
 import cookieSession from 'cookie-session'
 
 const app = express()
@@ -35,7 +35,7 @@ app.use(errorHandler)
 
 const start = async () => {
   if (!process.env.JWT_KEY) {
-    throw new AuthError('JWT_KEY must be defined')
+    throw new Error('JWT_KEY must be defined')
   }
   try {
     await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {
