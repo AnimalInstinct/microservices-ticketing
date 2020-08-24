@@ -52,6 +52,14 @@ This implementation has minuses and pluses
 
 - Not a real-time approach, granted JWT will pass authentication even if Administrator will change related to User status settings. As services haven't communicating with Auth service in real time, the will not get information in real time.
 
+## Unit tests for each or service component, middleware and function
+
+JEST using for tests running, to start testing just input this command in your terminal from any service folder
+
+```bash
+npm run tests
+```
+
 ## Server Side Rendering ReactJS + NextJS frontend microservice
 
 Next JS server side rendered React JS frontend application allows to get maximum from SEO optimization and gives simple rendered HTML code to the search system robots, that decrease time to index new pages and increase SEO optimization. Decrease page loading time and makes user experience better. App consume less traffic and do not consumes user's device resourses.
