@@ -60,9 +60,13 @@ JEST using for tests running, to start testing just input this command in your t
 npm run tests
 ```
 
-## Server Side Rendering ReactJS + NextJS frontend microservice
+## SEO friendly Server Side Rendering ReactJS + NextJS frontend microservice
 
 Next JS server side rendered React JS frontend application allows to get maximum from SEO optimization and gives simple rendered HTML code to the search system robots, that decrease time to index new pages and increase SEO optimization. Decrease page loading time and makes user experience better. App consume less traffic and do not consumes user's device resourses.
+
+### Helmet
+
+...Blah blah blah about the helmet
 
 ## CQRS Event Sourcing
 
