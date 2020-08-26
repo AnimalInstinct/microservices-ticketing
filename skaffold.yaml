@@ -15,4 +15,14 @@ build:
       sync:
         manual:
           - src: 'src/**/*.ts'
-            dest: './'
+            dest: '.'
+    - image: animalinstinct/client
+      context: client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: '**/*.ts'
+            dest: '.'
+          - src: '**/*.tsx'
+            dest: '.'

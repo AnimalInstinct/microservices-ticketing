@@ -60,9 +60,78 @@ JEST using for tests running, to start testing just input this command in your t
 npm run tests
 ```
 
-## Server Side Rendering ReactJS + NextJS frontend microservice
+## SEO friendly Server Side Rendering ReactJS + NextJS frontend microservice
 
-Next JS server side rendered React JS frontend application allows to get maximum from SEO optimization and gives simple rendered HTML code to the search system robots, that decrease time to index new pages and increase SEO optimization. Decrease page loading time and makes user experience better. App consume less traffic and do not consumes user's device resourses.
+First challenge is a resolving issues with SEO in One Page frontend applications.Next JS server side rendered React JS frontend application allows to get maximum from SEO optimization and gives simple rendered HTML code to the search system robots, that decrease time to index new pages and increase SEO optimization. Decrease page loading time and makes user experience better. App consume less traffic and do not consumes user's device resourses.
+
+### Helmet
+
+...Blah blah blah about the helmet
+
+## Cross-namespace communication between services Pods challenge
+
+In the server side rendering architecture, NextJS uses server-side rendered getInitialProps executed on a server in most cases. In the world of Kubernetes axios server side requests to the base URL's routing by Ingress Nginx and going in their namespaces only by default. Nginx-ingress service running in different namespace and thats the challenge in Microservices architecture. For the communication between services in different namespaces we can use URL's like: http://SERVICE-NAME.NAMESPACE-NAME.svc.cluster.local/foo/bar
+
+To solve this issue any time whe we make a request to the API server in NextJS we have to check is it server side or client side request and determine the base URL.
+
+To keep code clear this job should be done by reusable helper like React Hook, problem is - this is not a React, hooks operates in React components only, it will not work inside of getInitialProps function so it should be a helper with clear function exposed - build-client helper (/client/api/build-client.tsx).
+
+```js
+import buildClient from '../api/build-client'
+
+const LandingPage = ({ currentUser }) => {
+  return <h1>{currentUser.email}</h1>
+}
+
+LandingPage.getInitialProps = async (context) => {
+  const { data } = await buildClient(context).get('/api/users/currentuser')
+  return data
+}
+
+export default LandingPage
+```
+
+## useRequest custom ReactJS hook to handle axios requests and errors
+
+How to use:
+
+```js
+import { useRequest } from '../../hooks'
+
+const { doRequest, errors } = useRequest({
+  url: '/api/users/signup',
+  method: 'post',
+  body: {
+    email,
+    password,
+  },
+})
+
+const onSubmit = async (event) => {
+  event.preventDefault()
+  doRequest()
+}
+
+return (
+    <form onSubmit={onSubmit}>
+      <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          type='text'
+          className='form-control'
+        />
+         <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          type='text'
+          className='form-control'
+        />
+        <button className='btn btn-primary'>Sign Up</button>
+      {errors}
+    </form>
+  )
+}
+```
 
 ## CQRS Event Sourcing
 
