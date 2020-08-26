@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useRequest } from '../../hooks'
+import Router from 'next/router'
 
 const SignUpForm = () => {
   const [email, setEmail] = useState('')
@@ -11,11 +12,12 @@ const SignUpForm = () => {
       email,
       password,
     },
+    onSuccess: () => Router.push('/'),
   })
 
   const onSubmit = async (event) => {
     event.preventDefault()
-    doRequest()
+    await doRequest()
   }
 
   return (
@@ -39,7 +41,7 @@ const SignUpForm = () => {
           className='form-control'
         />
       </div>
-      <button className='btn btn-primary'>Sign In</button>
+      <button className='btn btn-primary'>Sign Up</button>
       {errors}
     </form>
   )

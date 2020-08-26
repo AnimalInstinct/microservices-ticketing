@@ -74,29 +74,7 @@ In the server side rendering architecture, NextJS uses server-side rendered getI
 
 To solve this issue any time whe we make a request to the API server in NextJS we have to check is it server side or client side request and determine the base URL.
 
-```js
-LandingPage.getInitialProps = async ({ req }) => {
-  // By default this function executed server-side and Client side in some cases like redirect for example Checking where the getInitialProps function executed In case of window is undefined - we are on a server side
-  if (typeof window === 'undefined') {
-    //Server side. request should be made to inter-namespace communication URL's like http://SERVICE-NAME.NAMESPACE-NAME.svc.cluster.local/foo/bar
-    const { data } = await axios.get(
-      'http://ingress-nginx-controller.ingress-nginx.svc.cluster.local/api/users/currentuser',
-      {
-        //We should manually provide host header to help Nginx determine domain and route
-        headers: req.headers,
-      }
-    )
-    return data
-  } else {
-    //Client side. request can be made with a base url
-    const { data } = await axios.get('/api/users/currentuser')
-    return data
-  }
-  return {}
-}
-```
-
-To keep code clear this job should be done by helper like React Hook, problem is - this is not a React, hooks operates in React components only, so it will be helper with clear function exposed - build-client helper (/client/api/build-client.tsx).
+To keep code clear this job should be done by reusable helper like React Hook, problem is - this is not a React, hooks operates in React components only, it will not work inside of getInitialProps function so it should be a helper with clear function exposed - build-client helper (/client/api/build-client.tsx).
 
 ```js
 import buildClient from '../api/build-client'
