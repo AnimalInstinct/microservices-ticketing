@@ -2,9 +2,9 @@ import express, { Request, Response } from 'express'
 import { body } from 'express-validator'
 import jwt from 'jsonwebtoken'
 import 'express-async-errors'
-import { validateRequest } from '../middlewares'
+import { validateRequest } from '@alexhelloworld/common'
+import { BadRequestError } from '@alexhelloworld/common'
 import { User } from '../models'
-import { BadRequestError } from '../errors'
 import { Password } from '../services'
 
 const router = express.Router()
