@@ -7,7 +7,12 @@ import {
   currentUser,
 } from '@alexhelloworld/common'
 import cookieSession from 'cookie-session'
-import { createTicketRouter } from './routes'
+import {
+  createTicketRouter,
+  showTicketRouter,
+  indexTicketRouter,
+  updateTicketRouter,
+} from './routes'
 
 const app = express()
 app.set('trust proxy', true)
@@ -23,6 +28,9 @@ app.use(
 )
 app.use(currentUser)
 app.use(createTicketRouter)
+app.use(showTicketRouter)
+app.use(indexTicketRouter)
+app.use(updateTicketRouter)
 
 app.get('*', () => {
   throw new NotFoundError()
