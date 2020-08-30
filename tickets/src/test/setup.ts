@@ -1,13 +1,12 @@
 import { MongoMemoryServer } from 'mongodb-memory-server'
 import mongoose from 'mongoose'
-import request from 'supertest'
-import { app } from '../app'
+import jwt from 'jsonwebtoken'
 
 // adding signin function to the global scope
 declare global {
   namespace NodeJS {
     interface Global {
-      signin(): Promise<string[]>
+      signin(): string[]
     }
   }
 }
@@ -40,16 +39,25 @@ afterAll(async () => {
 })
 
 // init global sign in function that returns cookie with user's details
-global.signin = async () => {
-  const email = 'test@test.com'
-  const password = 'password'
+global.signin = () => {
+  // Build a JWT payload ({id,email})
+  const payload = {
+    id: 'asdf123asd',
+    email: 'test@test.com',
+  }
 
-  const response = await request(app)
-    .post('/api/users/signup')
-    .send({ email, password })
-    .expect(201)
+  // Create a JWT
+  const token = jwt.sign(payload, process.env.JWT_KEY!)
 
-  const cookie = response.get('Set-Cookie')
+  // Build session object ({jwt:my_jwt})
+  const session = { jwt: token }
 
-  return cookie
+  // Turn that session into JSON
+  const sessionJSON = JSON.stringify(session)
+
+  // Take JSON and encode it as base64
+  const base64 = Buffer.from(sessionJSON).toString('base64')
+
+  // Return a string thats the cookie with the data encoded
+  return [`express:sess=${base64}`]
 }
